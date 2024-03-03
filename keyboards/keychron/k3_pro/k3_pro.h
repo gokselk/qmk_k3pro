@@ -16,60 +16,40 @@
 
 #pragma once
 
-#include "stdint.h"
+#include "quantum.h"
+#ifdef VIA_ENABLE
+#    include "via.h"
+#endif
+
+#define ___ KC_NO
+
+#ifdef VIA_ENABLE
+#    define USER_START QK_KB_0
+#else
+#    define USER_START SAFE_RANGE
+#endif
 
 // clang-format off
 enum {
-    KC_LOPTN = QK_KB_0,
+    KC_LOPTN = USER_START,
     KC_ROPTN,
     KC_LCMMD,
     KC_RCMMD,
-    KC_MCTRL,
-    KC_LNPAD,
-    KC_TASK_VIEW,
-    KC_FILE_EXPLORER,
-    KC_SCREEN_SHOT,
-    KC_CORTANA,
+    KC_TASK,
+    KC_FILE,
+    KC_SNAP,
+    KC_CTANA,
     KC_SIRI,
-#ifdef LK_WIRELESS_ENABLE
+#ifdef KC_BLUETOOTH_ENABLE
     BT_HST1,
     BT_HST2,
     BT_HST3,
-    P2P4G,
     BAT_LVL,
 #else
-    BT_HST1 = _______,
-    BT_HST2 = _______,
-    BT_HST3 = _______,
-    P2P4G   = _______,
-    BAT_LVL = _______,
+    BT_HST1 = KC_TRNS,
+    BT_HST2 = KC_TRNS,
+    BT_HST3 = KC_TRNS,
+    BAT_LVL = KC_TRNS,
 #endif
-#ifdef DANANLOG_MATRIX
-    PROF1,
-    PROF2,
-    PROF3,
-#else
-    PROF1 = _______,
-    PROF2 = _______,
-    PROF3 = _______,
-#endif
-    NEW_SAFE_RANGE,
+	NEW_SAFE_RANGE
 };
-
-#define KC_TASK KC_TASK_VIEW
-#define KC_FILE KC_FILE_EXPLORER
-#define KC_SNAP KC_SCREEN_SHOT
-#define KC_CTANA KC_CORTANA
-
-typedef struct PACKED {
-    uint8_t len;
-    uint8_t keycode[3];
-} key_combination_t;
-
-bool process_record_keychron_common(uint16_t keycode, keyrecord_t *record);
-void keychron_common_task(void);
-
-#ifdef ENCODER_ENABLE
-void encoder_cb_init(void);
-#endif
-
